@@ -10,10 +10,11 @@ function App() {
     fetchCharacters();
   }, []);
 
+  const limit = 15;
   const fetchCharacters = async (page) => {
     const apiUrl = "https://narutodb.xyz/api/character";
     setIsLoading(true);
-    const result = await axios.get(apiUrl, { params: { page } });
+    const result = await axios.get(apiUrl, { params: { page, limit } });
     setCharacters(result.data.characters);
     setIsLoading(false);
   };
@@ -21,6 +22,11 @@ function App() {
     const nextPage = page + 1;
     fetchCharacters(nextPage);
     setPage(nextPage);
+  };
+  const handlePrev = async () => {
+    const prevPage = page - 1;
+    fetchCharacters(prevPage);
+    setPage(prevPage);
   };
   return (
     <div className="container">
@@ -51,9 +57,15 @@ function App() {
             ))}
           </div>
           <div className="pager">
-            <button className="prev">Previous</button>
+            <button disabled={page === 1} className="prev" onClick={handlePrev}>
+              Previous
+            </button>
             <span className="page-number">{page}</span>
-            <button className="next" onClick={handleNext}>
+            <button
+              disabled={limit > characters.length}
+              className="next"
+              onClick={handleNext}
+            >
               Next
             </button>
           </div>
