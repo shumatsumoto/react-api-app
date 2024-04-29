@@ -12,23 +12,28 @@ function App() {
     const apiUrl = "https://narutodb.xyz/api/character";
     const result = await axios.get(apiUrl);
     setCharacters(result.data.characters);
-    console.log(result);
   };
   return (
     <div className="container">
       <main>
-        <div className="card-container">
+        <div className="cards-container">
           {characters.map((character, index) => (
             <div className="card" key={index}>
-              <div className="card-image">
-                <img
-                  src={character.images[0] || "dummy.png"}
-                  alt={character.name}
-                />
-              </div>
+              <img
+                src={character.images[0] || "dummy.png"}
+                alt={character.name}
+                className="card-image"
+              />
               <div className="card-content">
-                <h2>{character.name}</h2>
-                <p>{character.description}</p>
+                <h2 className="card-title">{character.name}</h2>
+                <p className="card-description">
+                  {character.debut?.appearsIn ?? "なし"}
+                </p>
+                <div className="card-footer">
+                  <span className="afiliation">
+                    {character.personal?.affiliation ?? "なし"}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
